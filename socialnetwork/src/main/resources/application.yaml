@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /socialnetwork
+
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/ig2?useSSL=false"
+    username: root
+    password: 12345678
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: "432253808116-doslh60aamvqps87rhcfet274qm4orl9.apps.googleusercontent.com"
+            client-secret: "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"
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+            scope:
+              - email
+              - profile
+jwt:
+  signerKey: "4FUNMjFiPr1J29IIqbjc7QbPpX2RPfQSVAH8b5dQHVK5XxyTdjC6Ax9DG8YodTb5"
+
+email:
+  name: "hoanghuutuyen060204@gmail.com"
+
+api:
+  key: "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"
