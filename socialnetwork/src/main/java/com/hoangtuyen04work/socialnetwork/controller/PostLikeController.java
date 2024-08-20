@@ -19,8 +19,11 @@ public class PostLikeController {
     PostLikeService postLikeService;
 
     @GetMapping("/count/{id}")
-    public Long countLikes(@PathVariable String id) throws AppException {
-        return postLikeService.countLikes(id);
+    public ApiResponse<Long> countLikes(@PathVariable String id) throws AppException {
+        return ApiResponse.<Long>builder()
+                .data(postLikeService.countLikes(id))
+                .message(NoticeResponse.success)
+                .build();
     }
 
 
@@ -32,4 +35,13 @@ public class PostLikeController {
                 .message(NoticeResponse.success)
                 .build();
     }
+
+    @GetMapping("/check/{id}")
+    public ApiResponse<Boolean> checkLike(@PathVariable String id) throws AppException {
+        return ApiResponse.<Boolean>builder()
+                .data(postLikeService.isLiked(id))
+                .message(NoticeResponse.success)
+                .build();
+    }
+
 }

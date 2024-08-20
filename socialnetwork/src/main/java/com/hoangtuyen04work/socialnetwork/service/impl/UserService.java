@@ -1,5 +1,6 @@
 package com.hoangtuyen04work.socialnetwork.service.impl;
 
+import com.hoangtuyen04work.socialnetwork.dto.request.UserRequest;
 import com.hoangtuyen04work.socialnetwork.dto.response.UserResponse;
 import com.hoangtuyen04work.socialnetwork.entity.RoleEntity;
 import com.hoangtuyen04work.socialnetwork.entity.UserEntity;
@@ -47,9 +48,9 @@ public class UserService implements UserServiceInterface {
                 ()-> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
     @Override
-    public UserResponse editName(String id, String name) throws AppException {
+    public UserResponse editName(String id, UserRequest request) throws AppException {
         UserEntity userEntity = getUserInHolder();
-        userEntity.setUserName(name);
+        userEntity.setUserName(request.getUserName());
         return userMapper.toUserResponse(save(userEntity));
     }
     @Override
@@ -81,15 +82,29 @@ public class UserService implements UserServiceInterface {
     public UserResponse getInfo(String id) throws AppException {
         Optional<UserEntity> userEntity = userRepository.findById(id);
         if (userEntity.isPresent()) {
-            if (Objects.equals(getIdInHolder(), id)) {
-                return userMapper.toUserResponse(userEntity.get()).hideSensitiveInfo();
-            } else {
-                return userMapper.toUserResponse(userEntity.get());
-            }
+                UserResponse response =  userMapper.toUserResponse(userEntity.get()).hideSensitiveInfo();
+                response.setNumberFollower(countNumberFollower(id));
+                System.err.println(countNumberFollower(id));
+                response.setNumberFriend(countNumberFriend(id));
+                System.err.println(countNumberFriend(id));
+                return response;
+
         } else {
             throw new AppException(ErrorCode.USER_NOT_EXISTED);
         }
     }
+
+    @Override
+    public Long countNumberFollower(String id){
+        return userRepository.countNumberFollower(id);
+    }
+
+    @Override
+    public Long countNumberFriend(String id){
+        return userRepository.countNumberFriend(id);
+    }
+
+
 
     @Override
     public UserEntity create(UserEntity userEntity){

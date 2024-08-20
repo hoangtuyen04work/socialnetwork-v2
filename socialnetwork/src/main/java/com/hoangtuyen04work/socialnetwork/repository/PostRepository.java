@@ -13,8 +13,15 @@ import java.util.Set;
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, String> {
 
-    @Query(value = "SELECT * FROM post  post WHERE post.title LIKE %:finded% OR post.content LIKE %:finded% ORDER BY post.createAt DESC LIMIT 10 OFFSET :page ", nativeQuery = true)
-    List<PostEntity> findByTitleContainingOrContentContaining(@Param("finded") String finded, @Param("page") Long page);
+    @Query(value = "SELECT * FROM post WHERE content LIKE %:finded% OR title LIKE %:finded% ORDER BY created_at DESC LIMIT 50 OFFSET :page", nativeQuery = true)
+    List<PostEntity> findByTitleContainingOrContentContaining(@Param("finded") String finded, @Param("page") Long offset);
+
     void deleteAllByUser(UserEntity user);
     Set<PostEntity> findAllByUser(UserEntity user);
+    @Query("SELECT p.user FROM PostEntity p WHERE p.id = :postId")
+    UserEntity findUserByPostId(@Param("postId") String postId);
+    @Query("SELECT p.id FROM PostEntity p WHERE p.user = :user ORDER BY p.createdAt DESC ")
+    List<String> getAllIdByUser(@Param("user") UserEntity user);
+
+
 }

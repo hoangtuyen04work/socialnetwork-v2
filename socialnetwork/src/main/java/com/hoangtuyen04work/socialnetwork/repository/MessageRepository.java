@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<MessageEntity, String> {
 
-    @Query(value = "SELECT * FROM message WHERE sender_id = :senderId AND receiver_id = :receiverId ORDER BY created_at DESC LIMIT 20 OFFSET :offset", nativeQuery = true)
+    @Query(value = "SELECT * FROM message WHERE sender_id = :senderId AND receiver_id = :receiverId ORDER BY created_at DESC LIMIT 50 OFFSET :offset", nativeQuery = true)
     List<MessageEntity> findBySenderAndReceiverOrderByCreatedAtDesc(@Param("senderId") String senderId, @Param("receiverId") String receiverId, @Param("offset") Long offset);
 }

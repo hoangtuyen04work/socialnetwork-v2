@@ -12,8 +12,15 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String> {
 
-    @Query(value = "SELECT * FROM user  user WHERE user.userId LIKE %:finded% LIMIT 10 OFFSET :page", nativeQuery = true)
-    List<UserEntity> findByUserIdContaining(@Param("finded") String name,@Param("page") Long page);
+    @Query(value = "SELECT * FROM user WHERE user_id LIKE %:finded% LIMIT 50 OFFSET :page", nativeQuery = true)
+    List<UserEntity> findByUserIdContaining(@Param("finded") String name, @Param("page") Long offset);
+
+    @Query("SELECT count(*) from FollowEntity f where f.following.id = :id")
+    Long countNumberFollower(@Param("id") String id);
+
+    @Query("SELECT count(*) from FriendEntity f where f.user.id = :id")
+    Long countNumberFriend(@Param("id") String id);
+
 
     boolean existsByUserId(String userId);
     

@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PostResponse {
     String id;
+    String posterName;
     String posterId;
     String title;
     String content;

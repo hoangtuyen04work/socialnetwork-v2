@@ -1,5 +1,6 @@
 package com.hoangtuyen04work.socialnetwork.service.impl;
 
+import com.hoangtuyen04work.socialnetwork.dto.response.IdResponse;
 import com.hoangtuyen04work.socialnetwork.dto.response.PostResponse;
 import com.hoangtuyen04work.socialnetwork.dto.response.ShortenProfile;
 import com.hoangtuyen04work.socialnetwork.entity.PostEntity;
@@ -26,20 +27,20 @@ public class FindService implements FindServiceInterface {
     PostService postService;
 
     @Override
-    public List<ShortenProfile> findUser(String finded, Long page) throws AppException {
+    public List<String> findUser(String finded, Long page) throws AppException {
         List<UserEntity> userList = userService.find(finded, page*10 - 10);
-        List<ShortenProfile> shortenProfileList = new ArrayList<>();
+        List<String> shortenProfileList = new ArrayList<>();
         for (UserEntity user : userList) {
-            shortenProfileList.add(userMapper.toShortenProfile(user));
+            shortenProfileList.add(user.getId());
         }
         return shortenProfileList;
     }
     @Override
-    public List<PostResponse> findPost(String finded, Long page) throws AppException {
+    public List<String> findPost(String finded, Long page) throws AppException {
             List<PostEntity> postEntityList = postService.find(finded, page*10 - 10);
-        List<PostResponse> postResponseList = new ArrayList<>();
+        List<String> postResponseList = new ArrayList<>();
         for (PostEntity post : postEntityList) {
-            postResponseList.add(postMapper.toPostResponse(post));
+            postResponseList.add(post.getId());
         }
         return postResponseList;
     }

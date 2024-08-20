@@ -9,5 +9,8 @@ public interface PostLikeSeviceInterface {
     PostLikeEntity setPostLikeAttribute(String postId) throws AppException;
 
     boolean isLiked(PostLikeEntity postLikeEntity) throws AppException;
+
+    boolean isLiked(String id);
+
     long countLikes(String postId) throws AppException;
 }

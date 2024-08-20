@@ -11,7 +11,9 @@ import java.util.Set;
 public interface PostServiceInterface {
     List<PostEntity> find(String finded, Long page) throws AppException;
 
-    Set<PostResponse> getAll() throws AppException;
+    List<String> getAllPostId(String id) throws AppException;
+
+    Set<PostResponse> getAll(String id) throws AppException;
     PostEntity findById(String postId) throws AppException;
     PostResponse getById(String postId) throws AppException;
     PostResponse create(NewPostRequest newPostRequest) throws AppException;

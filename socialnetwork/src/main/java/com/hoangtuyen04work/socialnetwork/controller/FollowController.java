@@ -7,32 +7,31 @@ import com.hoangtuyen04work.socialnetwork.dto.response.ApiResponse;
 import com.hoangtuyen04work.socialnetwork.exception.AppException;
 import com.hoangtuyen04work.socialnetwork.service.impl.FollowService;
 import com.hoangtuyen04work.socialnetwork.service.impl.FriendService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FollowController {
 
-    private final FriendService friendService;
     FollowService followService;
 
-    public FollowController(FriendService friendService) {
-        this.friendService = friendService;
-    }
 
-    @GetMapping("/followed")
-    public ApiResponse<Boolean> isFollowing(@RequestBody FollowRequest followRequest) throws AppException {
+
+    @GetMapping("/followed/{id}/{following}")
+    public ApiResponse<Boolean> isFollowing(@PathVariable String id, @PathVariable String following) throws AppException {
         return ApiResponse.<Boolean>builder()
-                .data(followService.isFollowing(followRequest))
+                .data(followService.isFollowing(id, following))
                 .message(NoticeResponse.success)
                 .build();
     }
 
-    @GetMapping("/follow")
-    public ApiResponse<String> follow(@RequestBody IdRequest idRequest) throws AppException {
-        followService.follow(idRequest);
+    @PostMapping("/follow/{id}")
+    public ApiResponse<String> follow(@PathVariable String id) throws AppException {
+        followService.follow(id);
 
         return ApiResponse.<String>builder()
                 .message(NoticeResponse.success)
@@ -40,28 +39,28 @@ public class FollowController {
                 .build();
     }
 
-    @GetMapping("/unfollow")
-    public ApiResponse<String> unfollow(@RequestBody IdRequest idRequest) throws AppException {
-        followService.unfollow(idRequest);
+    @PostMapping("/follow/un/{id}")
+    public ApiResponse<String> unfollow(@PathVariable String id) throws AppException {
+        followService.unfollow(id);
         return ApiResponse.<String>builder()
                 .message(NoticeResponse.success)
                 .data(null)
                 .build();
     }
 
-    @GetMapping("/count/follower")
-    public ApiResponse<Long> countFollower(@RequestBody  IdRequest idRequest) throws AppException {
+    @GetMapping("/follow/countfollower/{id}")
+    public ApiResponse<Long> countFollower(@PathVariable String id) throws AppException {
         return ApiResponse.<Long>builder()
                 .message(NoticeResponse.success)
-                .data(followService.countFollowers(idRequest))
+                .data(followService.countFollowers(id))
                 .build();
     }
 
-    @GetMapping("/count/following")
-    public ApiResponse<Long> countFollowing(@RequestBody  IdRequest idRequest) throws AppException {
+    @GetMapping("/follow/countfollowing/{id}")
+    public ApiResponse<Long> countFollowing(@PathVariable String id) throws AppException {
         return ApiResponse.<Long>builder()
                 .message(NoticeResponse.success)
-                .data( followService.countFollowings(idRequest))
+                .data( followService.countFollowings(id))
                 .build();
     }
 

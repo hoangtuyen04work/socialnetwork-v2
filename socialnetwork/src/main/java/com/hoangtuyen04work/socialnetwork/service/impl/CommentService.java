@@ -1,7 +1,6 @@
 package com.hoangtuyen04work.socialnetwork.service.impl;
 
 import com.hoangtuyen04work.socialnetwork.dto.request.CommentRequest;
-import com.hoangtuyen04work.socialnetwork.dto.request.IdRequest;
 import com.hoangtuyen04work.socialnetwork.dto.response.CommentResponse;
 import com.hoangtuyen04work.socialnetwork.entity.CommentEntity;
 import com.hoangtuyen04work.socialnetwork.entity.UserEntity;
@@ -13,7 +12,6 @@ import com.hoangtuyen04work.socialnetwork.service.interfaces.CommentServiceInter
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -30,6 +28,11 @@ public class CommentService  implements CommentServiceInterface {
     PostService postService;
 
     @Override
+    public Long countComment(String id){
+        return commentRepository.countComment(id);
+    }
+
+    @Override
     public CommentResponse add(CommentRequest commentRequest) throws AppException {
 
         CommentEntity commentEntity = CommentEntity.builder()
@@ -42,17 +45,22 @@ public class CommentService  implements CommentServiceInterface {
     }
 
     @Override
-    public Set<CommentResponse> getAll(IdRequest idRequest) throws AppException {
-        if(!postService.exists(idRequest.getId())) {
+    public Set<CommentResponse> getAll(String id) throws AppException {
+        if(!postService.exists(id)) {
             throw new AppException(ErrorCode.POST_NOT_EXISTED);
         }
-        Set<CommentEntity> comments = commentRepository.getAllByPostId(idRequest.getId());
+        Set<CommentEntity> comments = commentRepository.getAllByPostId(id);
         Set<CommentResponse> commentResponses = new HashSet<>();
         for (CommentEntity commentEntity : comments) {
-            commentResponses.add(commentMapper.toCommentResponse(commentEntity));
+            UserEntity userEntity = commentRepository.findUserByCommentId(commentEntity.getId());
+            CommentResponse response = commentMapper.toCommentResponse(commentEntity);
+            response.setCommenterId(userEntity.getId());
+            response.setCommenterName(userEntity.getUserName());
+            commentResponses.add(response);
         }
         return commentResponses;
     }
+
 
     @Override
     public CommentResponse get(String id) throws AppException {

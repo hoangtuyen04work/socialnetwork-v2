@@ -8,8 +8,10 @@ import com.hoangtuyen04work.socialnetwork.exception.AppException;
 import java.util.Set;
 
 public interface CommentServiceInterface {
+    Long countComment(String id);
+
     CommentResponse add(CommentRequest commentRequest) throws AppException;
-    Set<CommentResponse> getAll(IdRequest idRequest) throws AppException;
+    Set<CommentResponse> getAll(String id) throws AppException;
     CommentResponse get(String id) throws AppException;
     CommentResponse update(CommentRequest commentRequest) throws AppException;
     void delete(CommentRequest commentRequest) throws AppException;

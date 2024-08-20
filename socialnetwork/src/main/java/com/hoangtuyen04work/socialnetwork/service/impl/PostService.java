@@ -13,8 +13,6 @@ import com.hoangtuyen04work.socialnetwork.service.interfaces.PostServiceInterfac
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,8 +37,15 @@ public class PostService implements PostServiceInterface {
     }
 
     @Override
-    public Set<PostResponse> getAll() throws AppException {
-        UserEntity userEntity = userService.getUserInHolder();
+    public List<String> getAllPostId(String id) throws AppException {
+        UserEntity userEntity = userService.findById(id);
+        List<String> listPostId = postRepository.getAllIdByUser(userEntity);
+        return listPostId;
+    }
+
+    @Override
+    public Set<PostResponse> getAll(String id) throws AppException {
+        UserEntity userEntity = userService.findById(id);
         Set<PostEntity> postEntities = postRepository.findAllByUser(userEntity);
         return postEntities.stream()
                 .map(postMapper::toPostResponse)
@@ -55,7 +60,11 @@ public class PostService implements PostServiceInterface {
     @Override
     public PostResponse getById(String id) throws AppException {
         PostEntity postEntity = postRepository.findById(id).orElseThrow(() ->  new AppException(ErrorCode.POST_NOT_EXISTED));
-        return postMapper.toPostResponse(postEntity);
+         PostResponse postResponse = postMapper.toPostResponse(postEntity);
+         UserEntity userEntity = postRepository.findUserByPostId(id);
+         postResponse.setPosterId(userEntity.getId());
+         postResponse.setPosterName(userEntity.getUserName());
+         return postResponse;
     }
 
     @Override

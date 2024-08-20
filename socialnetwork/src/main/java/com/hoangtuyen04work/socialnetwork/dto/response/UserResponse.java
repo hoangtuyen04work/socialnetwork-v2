@@ -18,6 +18,8 @@ public class UserResponse {
     String userId;
     String DOB;
     String email;
+    Long numberFriend;
+    Long numberFollower;
     Set<RoleResponse> roles;
     LocalDate createdAt;
     LocalDate updatedAt;

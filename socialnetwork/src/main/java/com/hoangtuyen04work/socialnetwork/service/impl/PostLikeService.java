@@ -11,7 +11,6 @@ import com.hoangtuyen04work.socialnetwork.service.interfaces.PostLikeSeviceInter
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,9 +50,14 @@ public class PostLikeService implements PostLikeSeviceInterface {
     }
 
     @Override
+    public boolean isLiked(String id){
+        return postLikeRepository.existsByPostIdAndUserId(id, userService.getUserInHolder().getId());
+    }
+
+    @Override
     public long countLikes(String postId) throws AppException {
         if(postService.exists(postId)){
-            return postLikeRepository.countLikedByPostId(postId);
+            return postLikeRepository.countLikedByPostId(postService.findById(postId));
         }
         else{
             throw  new AppException(ErrorCode.POST_NOT_EXISTED);

@@ -13,12 +13,12 @@ public interface FollowServiceInterface {
 
     boolean isFollowing(String userId, String followingId);
 
-    long countFollowings(IdRequest idRequest) throws AppException;
+    long countFollowings(String id) throws AppException;
 
 
-    long countFollowers(IdRequest idRequest) throws AppException;
+    long countFollowers(String id) throws AppException;
 
-    void follow(IdRequest idRequest) throws AppException;
+    void follow(String id) throws AppException;
 
-    void unfollow(IdRequest idRequest) throws AppException;
+    void unfollow(String id) throws AppException;
 }

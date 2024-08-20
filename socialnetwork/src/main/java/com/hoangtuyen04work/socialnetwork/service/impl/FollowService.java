@@ -31,31 +31,28 @@ public class FollowService implements FollowServiceInterface {
         return followRepository.existsByUserIdAndFollowingId(userId, followingId);
     }
     @Override
-    public long countFollowings(IdRequest idRequest) throws AppException {
-        return followRepository.countFollowing(userService.findById(idRequest.getId()));
+    public long countFollowings(String id) throws AppException {
+        return followRepository.countFollowing(userService.findById(id));
     }
     @Override
-    public long countFollowers(IdRequest idRequest) throws AppException {
-        return followRepository.countFollower(userService.findById(idRequest.getId()));
+    public long countFollowers(String id) throws AppException {
+        return followRepository.countFollower(userService.findById(id));
     }
     @Override
-    public void follow(IdRequest idRequest) throws AppException {
+    public void follow( String id) throws AppException {
         FollowEntity follow = new FollowEntity();
         follow.setUser(userService.getUserInHolder());
-        follow.setFollowing(userService.findById(idRequest.getId()));
+        follow.setFollowing(userService.findById(id));
         followRepository.save(follow);
-        if(isFollowing(idRequest.getId(), userService.getIdInHolder())){
-            friendService.addFriend(userService.getIdInHolder(), idRequest.getId());
+        if(isFollowing(id, userService.getIdInHolder())){
+            friendService.addFriend(id);
         }
     }
     @Override
-    public void unfollow(IdRequest idRequest) throws AppException {
-        FollowEntity follow = new FollowEntity();
-        follow.setUser(userService.getUserInHolder());
-        follow.setFollowing(userService.findById(idRequest.getId()));
-        if(friendService.isFriend(idRequest.getId(), userService.getIdInHolder())){
-            friendService.unFriend(userService.getIdInHolder(), idRequest.getId());
+    public void unfollow(String id) throws AppException {
+        if(friendService.isFriend(id, userService.getIdInHolder())){
+            friendService.unFriend(id);
         }
-        followRepository.delete(follow);
+        followRepository.unFollow(userService.getIdInHolder(), id);
     }
 }

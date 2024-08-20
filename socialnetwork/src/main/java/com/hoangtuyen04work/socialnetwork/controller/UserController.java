@@ -2,6 +2,7 @@ package com.hoangtuyen04work.socialnetwork.controller;
 
 import com.hoangtuyen04work.socialnetwork.constant.NoticeResponse;
 import com.hoangtuyen04work.socialnetwork.dto.request.IdRequest;
+import com.hoangtuyen04work.socialnetwork.dto.request.UserRequest;
 import com.hoangtuyen04work.socialnetwork.dto.response.ApiResponse;
 import com.hoangtuyen04work.socialnetwork.dto.response.AuthenticationResponse;
 import com.hoangtuyen04work.socialnetwork.dto.response.UserResponse;
@@ -28,10 +29,10 @@ public class UserController {
                 .build();
     }
 
-    @PutMapping("/user/edit/name")
-    public ApiResponse<UserResponse> editName(@PathVariable String id, @RequestBody String name) throws AppException, JOSEException {
+    @PutMapping("/user/edit/[id]")
+    public ApiResponse<UserResponse> editName(@PathVariable String id, @RequestBody UserRequest userRequest) throws AppException, JOSEException {
         return ApiResponse.<UserResponse>builder()
-                .data(userService.editName(id, name))
+                .data(userService.editName(id, userRequest))
                 .message(NoticeResponse.success)
                 .build();
     }

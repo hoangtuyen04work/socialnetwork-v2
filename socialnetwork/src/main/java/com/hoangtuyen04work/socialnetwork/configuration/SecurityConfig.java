@@ -36,7 +36,7 @@ import com.hoangtuyen04work.socialnetwork.constant.Role;
 public class SecurityConfig {
 
     final static String[] NotAuthentication_Url = { "/signup", "/logoutnow", "/login/**", "/refreshtoken" };
-    final static String[] Authentication_Url = {"/follow**", "/message/**", "/notification/**", "/inform/**", "/user/**", "/like/**", "/post/**", "/posts", "/comment/**", "/find/**"};
+    final static String[] Authentication_Url = {"/friend/**", "/follow**", "/message/**", "/notification/**", "/inform/**", "/user/**", "/like/**", "/post/**", "/posts", "/comment/**", "/find/**"};
     @Value("${jwt.signerKey}")
     @NonFinal
     String signerKey;
@@ -45,18 +45,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        long reqest = 0;
+        System.err.println("number requets: " + reqest++);
         httpSecurity
                 .authorizeRequests(request ->
-                request.requestMatchers(NotAuthentication_Url ).permitAll()
-                        .requestMatchers(Authentication_Url ).hasRole(Role.USER)
-                        .anyRequest()
-                        .authenticated())
-                .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/login/google", true)
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(new DefaultOAuth2UserService())
-                        )
-                );
+                        request.requestMatchers(NotAuthentication_Url ).permitAll()
+                                .requestMatchers(Authentication_Url ).hasRole(Role.USER)
+                                .anyRequest()
+                                .authenticated());
+//                .oauth2Login(oauth2 -> oauth2
+//                        .defaultSuccessUrl("/login/google", true)
+//                        .userInfoEndpoint(userInfo -> userInfo
+//                                .userService(new DefaultOAuth2UserService())
+//                        )
+//                );
         httpSecurity.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer
                                 -> jwtConfigurer.decoder(customJwtDecoder)

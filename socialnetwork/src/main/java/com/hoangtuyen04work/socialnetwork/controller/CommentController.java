@@ -30,13 +30,15 @@ public class CommentController {
                 .build();
     }
 
-    @GetMapping("/all")
-    public ApiResponse<Set<CommentResponse>> getAllComments(@RequestBody  IdRequest idRequest) throws AppException {
+    @GetMapping("/all/{id}")
+    public ApiResponse<Set<CommentResponse>> getAllComments(@PathVariable  String id) throws AppException {
         return ApiResponse.<Set<CommentResponse>>builder()
-                .data(commentService.getAll(idRequest))
+                .data(commentService.getAll(id))
                 .message(NoticeResponse.success)
                 .build();
     }
+
+
 
     @PutMapping()
     public ApiResponse<CommentResponse> edit(@RequestBody CommentRequest commentRequest) throws AppException {
