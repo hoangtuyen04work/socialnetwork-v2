@@ -4,6 +4,8 @@ server:
     context-path: /socialnetwork
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     url: "jdbc:mysql://localhost:3306/ig2?useSSL=false"
     username: root
@@ -25,6 +27,12 @@ spring:
               - profile
 jwt:
   signerKey: "4FUNMjFiPr1J29IIqbjc7QbPpX2RPfQSVAH8b5dQHVK5XxyTdjC6Ax9DG8YodTb5"
+
+amazon:
+  accessKey: "AKIAVRUVSN7O6R7B34E2"
+  secretKey: "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"
+  region: "ap-southeast-1"
+  bucket-name: "tuyen-third-bucket"
 
 email:
   name: "hoanghuutuyen060204@gmail.com"

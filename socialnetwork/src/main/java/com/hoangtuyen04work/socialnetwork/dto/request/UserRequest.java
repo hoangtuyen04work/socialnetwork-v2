@@ -2,6 +2,7 @@ package com.hoangtuyen04work.socialnetwork.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -13,4 +14,5 @@ public class UserRequest {
     String userId;
     String userName;
     String password;
+    MultipartFile multipartFile;
 }

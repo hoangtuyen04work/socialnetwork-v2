@@ -20,6 +20,7 @@ public interface PostRepository extends JpaRepository<PostEntity, String> {
     Set<PostEntity> findAllByUser(UserEntity user);
     @Query("SELECT p.user FROM PostEntity p WHERE p.id = :postId")
     UserEntity findUserByPostId(@Param("postId") String postId);
+
     @Query("SELECT p.id FROM PostEntity p WHERE p.user = :user ORDER BY p.createdAt DESC ")
     List<String> getAllIdByUser(@Param("user") UserEntity user);
 

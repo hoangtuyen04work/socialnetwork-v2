@@ -22,6 +22,7 @@ public class FriendService implements FriendServiceInterface {
     UserService userService;
     FriendRepository friendRepository;
     UserMapper userMapper;
+
     @Override
     public List<UserResponse> getFriends(String id, Long offset) throws AppException {
         List<FriendEntity> friendsEntity = friendRepository.findFriends(id , offset*15 - 15);
@@ -32,6 +33,11 @@ public class FriendService implements FriendServiceInterface {
             friendsEntity.remove(0);
         }
         return friends;
+    }
+
+    @Override
+    public List<String> getFriendsId(String id){
+        return friendRepository.getFriendsId(id);
     }
 
      @Override

@@ -33,6 +33,8 @@ public class PostEntity {
     @LastModifiedDate
     @CreatedDate
     LocalDateTime updateAt;
+    @Column
+    String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)

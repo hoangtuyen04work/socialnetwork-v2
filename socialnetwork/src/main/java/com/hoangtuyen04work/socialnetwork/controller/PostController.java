@@ -26,10 +26,19 @@ public class PostController {
 
 
 
+    @GetMapping("/post/home/{id}")
+    public ApiResponse<List<String>> getHomePost(@PathVariable String id) throws AppException {
+        return ApiResponse.<List<String>>builder()
+                .message(NoticeResponse.success)
+                .data(postService.getAllHome(id))
+                .build();
+    }
+
+
     @GetMapping("/posts/{id}")
     public ApiResponse<List<String>> getAllPost(@PathVariable String id) throws AppException {
         return ApiResponse.<List<String>>builder()
-                .message("Success")
+                .message(NoticeResponse.success)
                 .data(postService.getAllPostId(id))
                 .build();
     }
@@ -43,7 +52,9 @@ public class PostController {
     }
 
     @PostMapping("/post/new")
-    public ApiResponse<PostResponse> newPost(@RequestBody NewPostRequest newPostRequest) throws AppException {
+    public ApiResponse<PostResponse> newPost(@ModelAttribute  NewPostRequest newPostRequest) throws AppException {
+        System.err.println("contnet" + newPostRequest.getContent());
+        System.err.println("imahe" +newPostRequest.getMultipartFile());
         return ApiResponse.<PostResponse>builder()
                 .message(NoticeResponse.success)
                 .data(postService.create(newPostRequest))

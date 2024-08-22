@@ -10,6 +10,7 @@ import com.hoangtuyen04work.socialnetwork.entity.UserEntity;
 import com.hoangtuyen04work.socialnetwork.exception.AppException;
 import com.hoangtuyen04work.socialnetwork.exception.ErrorCode;
 import com.hoangtuyen04work.socialnetwork.mapper.UserMapper;
+import com.hoangtuyen04work.socialnetwork.service.Amazon3SService;
 import com.hoangtuyen04work.socialnetwork.service.interfaces.AuthenticationServiceInterface;
 import com.hoangtuyen04work.socialnetwork.utils.TokenUtils;
 import com.nimbusds.jose.*;
@@ -38,7 +39,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
     InvalidatedTokenService invalidatedTokenService;
     TokenUtils tokenUtils;
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
+    Amazon3SService amazon3SService;
 
     @Override
     @Transactional
@@ -105,6 +106,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
         userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         setRoleUser(userEntity);
         userEntity = userService.create(userEntity);
+        amazon3SService.addImageS3(userRequest.getMultipartFile());
         return AuthenticationResponse.builder()
                 .token(tokenUtils.generateToken(userEntity))
                 .info(userMapper.toUserResponse(userEntity))

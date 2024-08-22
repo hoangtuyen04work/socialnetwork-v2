@@ -23,6 +23,7 @@ public class UserResponse {
     Set<RoleResponse> roles;
     LocalDate createdAt;
     LocalDate updatedAt;
+    String imageUrl;
     public UserResponse hideSensitiveInfo() {
         this.email = null;
         this.createdAt = null;

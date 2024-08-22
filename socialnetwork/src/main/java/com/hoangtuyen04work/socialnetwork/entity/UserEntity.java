@@ -30,6 +30,10 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+
+    @Column
+    String imageUrl;
+
     @Column
     String email;
 

@@ -21,4 +21,5 @@ public class PostResponse {
     LocalDate updatedAt;
     Long numberLike;
     Long numberComment;
+    String imageUrl;
 }

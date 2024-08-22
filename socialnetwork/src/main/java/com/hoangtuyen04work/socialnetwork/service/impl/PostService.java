@@ -9,12 +9,14 @@ import com.hoangtuyen04work.socialnetwork.exception.AppException;
 import com.hoangtuyen04work.socialnetwork.exception.ErrorCode;
 import com.hoangtuyen04work.socialnetwork.mapper.PostMapper;
 import com.hoangtuyen04work.socialnetwork.repository.PostRepository;
+import com.hoangtuyen04work.socialnetwork.service.Amazon3SService;
 import com.hoangtuyen04work.socialnetwork.service.interfaces.PostServiceInterface;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,6 +29,20 @@ public class PostService implements PostServiceInterface {
     PostRepository postRepository;
     PostMapper postMapper;
     UserService userService;
+    Amazon3SService amazon3SService;
+    FriendService friendService;
+    @Override
+    public List<String> getAllHome(String id) throws AppException {
+        List<String> response = new ArrayList<>();
+        List<String> friendId = friendService.getFriendsId(id);
+        while(!friendId.isEmpty()){
+            response.addAll(getAllPostId(friendId.getFirst()));
+            friendId.removeFirst();
+        }
+        response.forEach( (n) -> { System.err.println("id " + n); } );
+        return response;
+    }
+
     @Override
     public List<PostEntity> find(String finded, Long page) throws AppException {
         List<PostEntity> postList = postRepository.findByTitleContainingOrContentContaining(finded, page);
@@ -71,7 +87,11 @@ public class PostService implements PostServiceInterface {
     public PostResponse create(NewPostRequest newPostRequest) throws AppException {
         PostEntity postEntity = postMapper.toPostEntity(newPostRequest);
         postEntity.setUser(userService.getUserInHolder());
-        return postMapper.toPostResponse(save(postEntity));
+        if(newPostRequest.getMultipartFile() != null){
+            postEntity.setImageUrl(amazon3SService.addImageS3(newPostRequest.getMultipartFile()));
+        }
+        PostResponse postResponse = postMapper.toPostResponse(save(postEntity));
+        return postResponse;
     }
     @Override
     public PostEntity save(PostEntity postEntity){

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface PostServiceInterface {
+    List<String> getAllHome(String id) throws AppException;
+
     List<PostEntity> find(String finded, Long page) throws AppException;
 
     List<String> getAllPostId(String id) throws AppException;

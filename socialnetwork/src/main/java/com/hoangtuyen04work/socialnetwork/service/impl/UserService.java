@@ -8,6 +8,7 @@ import com.hoangtuyen04work.socialnetwork.exception.AppException;
 import com.hoangtuyen04work.socialnetwork.exception.ErrorCode;
 import com.hoangtuyen04work.socialnetwork.mapper.UserMapper;
 import com.hoangtuyen04work.socialnetwork.repository.*;
+import com.hoangtuyen04work.socialnetwork.service.Amazon3SService;
 import com.hoangtuyen04work.socialnetwork.service.interfaces.UserServiceInterface;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class UserService implements UserServiceInterface {
     UserRepository userRepository;
     UserMapper userMapper;
     RoleService roleService;
+    Amazon3SService amazon3SService;
 
     @Override
     public List<UserEntity> find(String name, Long page) throws AppException {

@@ -6,6 +6,7 @@ import com.hoangtuyen04work.socialnetwork.dto.response.ShortenProfile;
 import com.hoangtuyen04work.socialnetwork.entity.PostEntity;
 import com.hoangtuyen04work.socialnetwork.entity.UserEntity;
 import com.hoangtuyen04work.socialnetwork.exception.AppException;
+import com.hoangtuyen04work.socialnetwork.exception.ErrorCode;
 import com.hoangtuyen04work.socialnetwork.mapper.PostMapper;
 import com.hoangtuyen04work.socialnetwork.mapper.UserMapper;
 import com.hoangtuyen04work.socialnetwork.service.interfaces.FindServiceInterface;
@@ -29,6 +30,9 @@ public class FindService implements FindServiceInterface {
     @Override
     public List<String> findUser(String finded, Long page) throws AppException {
         List<UserEntity> userList = userService.find(finded, page*10 - 10);
+        if(userList.isEmpty()){
+            throw new AppException(ErrorCode.USER_NOT_EXISTED);
+        }
         List<String> shortenProfileList = new ArrayList<>();
         for (UserEntity user : userList) {
             shortenProfileList.add(user.getId());
@@ -37,7 +41,10 @@ public class FindService implements FindServiceInterface {
     }
     @Override
     public List<String> findPost(String finded, Long page) throws AppException {
-            List<PostEntity> postEntityList = postService.find(finded, page*10 - 10);
+        List<PostEntity> postEntityList = postService.find(finded, page*10 - 10);
+        if(postEntityList.isEmpty()){
+            throw new AppException(ErrorCode.POST_NOT_EXISTED);
+        }
         List<String> postResponseList = new ArrayList<>();
         for (PostEntity post : postEntityList) {
             postResponseList.add(post.getId());

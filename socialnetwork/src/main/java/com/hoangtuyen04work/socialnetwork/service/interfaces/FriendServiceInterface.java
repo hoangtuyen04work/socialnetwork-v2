@@ -8,6 +8,8 @@ import java.util.List;
 public interface FriendServiceInterface {
     List<UserResponse> getFriends(String id, Long offset) throws AppException;
 
+    List<String> getFriendsId(String id);
+
     long countFriend(String id) throws AppException;
 
 

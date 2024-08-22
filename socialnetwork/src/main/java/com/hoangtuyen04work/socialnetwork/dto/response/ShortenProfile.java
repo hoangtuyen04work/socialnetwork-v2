@@ -11,4 +11,5 @@ public class ShortenProfile {
     String id;
     String userName;
     String userId;
+    String avatarUrl;
 }

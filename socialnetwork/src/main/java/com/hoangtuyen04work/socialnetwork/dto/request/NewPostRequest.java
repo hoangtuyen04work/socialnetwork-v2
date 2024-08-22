@@ -3,6 +3,7 @@ package com.hoangtuyen04work.socialnetwork.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -12,4 +13,5 @@ import lombok.experimental.FieldDefaults;
 public class NewPostRequest {
     String title;
     String content;
+    MultipartFile multipartFile;
 }
