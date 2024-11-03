@@ -29,6 +29,7 @@ public class NotificationService implements NotificationServiceInterface {
     @Value(("${email.name}"))
     String emailSender;
     SendEmailClient sendEmailClient;
+
     @Override
     public EmailResponse sendEmail(SendEmailRequest sendEmailRequest) throws AppException {
         Sender sender = new Sender();

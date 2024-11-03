@@ -13,9 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Set;
 
 @RestController()
 @RequiredArgsConstructor
@@ -24,8 +22,6 @@ public class PostController {
     PostService postService;
     CommentService commentService;
 
-
-
     @GetMapping("/post/home/{id}")
     public ApiResponse<List<String>> getHomePost(@PathVariable String id) throws AppException {
         return ApiResponse.<List<String>>builder()
@@ -33,7 +29,6 @@ public class PostController {
                 .data(postService.getAllHome(id))
                 .build();
     }
-
 
     @GetMapping("/posts/{id}")
     public ApiResponse<List<String>> getAllPost(@PathVariable String id) throws AppException {
@@ -53,8 +48,6 @@ public class PostController {
 
     @PostMapping("/post/new")
     public ApiResponse<PostResponse> newPost(@ModelAttribute  NewPostRequest newPostRequest) throws AppException {
-        System.err.println("contnet" + newPostRequest.getContent());
-        System.err.println("imahe" +newPostRequest.getMultipartFile());
         return ApiResponse.<PostResponse>builder()
                 .message(NoticeResponse.success)
                 .data(postService.create(newPostRequest))
@@ -73,7 +66,6 @@ public class PostController {
     @PutMapping("/post/edit/{id}")
     public ApiResponse<AuthenticationResponse> editPost(@PathVariable String id, @RequestBody NewPostRequest newPostRequest) throws AppException {
         postService.update(id, newPostRequest);
-        //return info post after edit
         return ApiResponse.<AuthenticationResponse>builder()
                 .message(NoticeResponse.success)
                 .data(null)

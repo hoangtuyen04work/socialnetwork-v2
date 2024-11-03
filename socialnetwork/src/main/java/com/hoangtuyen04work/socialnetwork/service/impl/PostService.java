@@ -31,6 +31,7 @@ public class PostService implements PostServiceInterface {
     UserService userService;
     Amazon3SService amazon3SService;
     FriendService friendService;
+
     @Override
     public List<String> getAllHome(String id) throws AppException {
         List<String> response = new ArrayList<>();
@@ -39,7 +40,6 @@ public class PostService implements PostServiceInterface {
             response.addAll(getAllPostId(friendId.getFirst()));
             friendId.removeFirst();
         }
-        response.forEach( (n) -> { System.err.println("id " + n); } );
         return response;
     }
 
@@ -90,14 +90,13 @@ public class PostService implements PostServiceInterface {
         if(newPostRequest.getMultipartFile() != null){
             postEntity.setImageUrl(amazon3SService.addImageS3(newPostRequest.getMultipartFile()));
         }
-        PostResponse postResponse = postMapper.toPostResponse(save(postEntity));
-        return postResponse;
+        return postMapper.toPostResponse(save(postEntity));
     }
+
     @Override
     public PostEntity save(PostEntity postEntity){
         return postRepository.save(postEntity);
     }
-
 
     @Override
     public PostResponse update(String postId, NewPostRequest newPostRequest) throws AppException {
@@ -109,6 +108,7 @@ public class PostService implements PostServiceInterface {
         postEntity.setTitle(newPostRequest.getTitle());
         return postMapper.toPostResponse(postRepository.save(postEntity));
     }
+
     @Override
     public PostEntity findPost(String postId) throws AppException {
         return  postRepository.findById(postId)

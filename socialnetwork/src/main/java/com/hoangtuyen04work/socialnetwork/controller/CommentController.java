@@ -1,9 +1,7 @@
 package com.hoangtuyen04work.socialnetwork.controller;
 
-
 import com.hoangtuyen04work.socialnetwork.constant.NoticeResponse;
 import com.hoangtuyen04work.socialnetwork.dto.request.CommentRequest;
-import com.hoangtuyen04work.socialnetwork.dto.request.IdRequest;
 import com.hoangtuyen04work.socialnetwork.dto.response.ApiResponse;
 import com.hoangtuyen04work.socialnetwork.dto.response.CommentResponse;
 import com.hoangtuyen04work.socialnetwork.exception.AppException;
@@ -12,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Set;
 
 @RestController
@@ -38,8 +35,6 @@ public class CommentController {
                 .build();
     }
 
-
-
     @PutMapping()
     public ApiResponse<CommentResponse> edit(@RequestBody CommentRequest commentRequest) throws AppException {
         return ApiResponse.<CommentResponse>builder()
@@ -56,5 +51,4 @@ public class CommentController {
                 .data(null)
                 .build();
     }
-
 }

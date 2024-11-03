@@ -1,6 +1,7 @@
 package com.hoangtuyen04work.socialnetwork.mapper;
 
 import com.hoangtuyen04work.socialnetwork.dto.request.NewPostRequest;
+import com.hoangtuyen04work.socialnetwork.dto.response.IdResponse;
 import com.hoangtuyen04work.socialnetwork.dto.response.PostResponse;
 import com.hoangtuyen04work.socialnetwork.entity.PostEntity;
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-08-14T17:41:15+0700",
+    date = "2024-09-07T16:44:10+0700",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.3 (Oracle Corporation)"
 )
 @Component
@@ -58,8 +59,22 @@ public class PostMapperImpl implements PostMapper {
         postResponse.setTitle( postEntity.getTitle() );
         postResponse.setContent( postEntity.getContent() );
         postResponse.setCreatedAt( xmlGregorianCalendarToLocalDate( localDateTimeToXmlGregorianCalendar( postEntity.getCreatedAt() ) ) );
+        postResponse.setImageUrl( postEntity.getImageUrl() );
 
         return postResponse;
+    }
+
+    @Override
+    public IdResponse toIdResponse(PostEntity postEntity) {
+        if ( postEntity == null ) {
+            return null;
+        }
+
+        IdResponse idResponse = new IdResponse();
+
+        idResponse.setId( postEntity.getId() );
+
+        return idResponse;
     }
 
     private XMLGregorianCalendar localDateTimeToXmlGregorianCalendar( LocalDateTime localDateTime ) {

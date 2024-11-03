@@ -106,7 +106,9 @@ public class AuthenticationService implements AuthenticationServiceInterface {
         userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         setRoleUser(userEntity);
         userEntity = userService.create(userEntity);
-        amazon3SService.addImageS3(userRequest.getMultipartFile());
+        if(userRequest.getMultipartFile() != null){
+            amazon3SService.addImageS3(userRequest.getMultipartFile());
+        }
         return AuthenticationResponse.builder()
                 .token(tokenUtils.generateToken(userEntity))
                 .info(userMapper.toUserResponse(userEntity))

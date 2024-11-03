@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     UserService userService;
 
-
     @GetMapping("/info/{id}")
     public ApiResponse<UserResponse> getInfo(@PathVariable String id) throws AppException {
         return ApiResponse.<UserResponse>builder()

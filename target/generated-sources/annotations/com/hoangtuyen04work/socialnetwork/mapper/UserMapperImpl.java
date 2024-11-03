@@ -1,9 +1,11 @@
 package com.hoangtuyen04work.socialnetwork.mapper;
 
 import com.hoangtuyen04work.socialnetwork.dto.request.UserRequest;
+import com.hoangtuyen04work.socialnetwork.dto.response.IdResponse;
 import com.hoangtuyen04work.socialnetwork.dto.response.RoleResponse;
 import com.hoangtuyen04work.socialnetwork.dto.response.ShortenProfile;
 import com.hoangtuyen04work.socialnetwork.dto.response.UserResponse;
+import com.hoangtuyen04work.socialnetwork.entity.FriendEntity;
 import com.hoangtuyen04work.socialnetwork.entity.RoleEntity;
 import com.hoangtuyen04work.socialnetwork.entity.UserEntity;
 import java.time.LocalDate;
@@ -22,7 +24,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-08-14T17:41:15+0700",
+    date = "2024-09-07T16:44:10+0700",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.3 (Oracle Corporation)"
 )
 @Component
@@ -58,6 +60,7 @@ public class UserMapperImpl implements UserMapper {
         }
         userResponse.email( userEntity.getEmail() );
         userResponse.createdAt( xmlGregorianCalendarToLocalDate( localDateTimeToXmlGregorianCalendar( userEntity.getCreatedAt() ) ) );
+        userResponse.imageUrl( userEntity.getImageUrl() );
 
         return userResponse.build();
     }
@@ -91,6 +94,33 @@ public class UserMapperImpl implements UserMapper {
         shortenProfile.userId( userEntity.getUserId() );
 
         return shortenProfile.build();
+    }
+
+    @Override
+    public UserResponse toUserResponse(FriendEntity friendEntity) {
+        if ( friendEntity == null ) {
+            return null;
+        }
+
+        UserResponse.UserResponseBuilder userResponse = UserResponse.builder();
+
+        userResponse.id( friendEntity.getId() );
+        userResponse.createdAt( xmlGregorianCalendarToLocalDate( localDateTimeToXmlGregorianCalendar( friendEntity.getCreatedAt() ) ) );
+
+        return userResponse.build();
+    }
+
+    @Override
+    public IdResponse toIdResponse(UserEntity userEntity) {
+        if ( userEntity == null ) {
+            return null;
+        }
+
+        IdResponse idResponse = new IdResponse();
+
+        idResponse.setId( userEntity.getId() );
+
+        return idResponse;
     }
 
     private XMLGregorianCalendar localDateTimeToXmlGregorianCalendar( LocalDateTime localDateTime ) {

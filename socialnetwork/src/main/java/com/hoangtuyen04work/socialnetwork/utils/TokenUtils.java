@@ -58,6 +58,7 @@ public class TokenUtils {
         jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
         return jwsObject.serialize();
     }
+
     private JWTClaimsSet generateClamSet(UserEntity userEntity, Long time){
         String roleScope = buildRole(userEntity.getRoles());
         return new JWTClaimsSet.Builder()
@@ -81,17 +82,12 @@ public class TokenUtils {
         return joiner.toString();
     }
 
-
-    public SignedJWT verifyToken(String token) throws JOSEException, ParseException, AppException {
+    public SignedJWT verifyToken(String token) throws  AppException {
         try{
             JWSVerifier verifier = new MACVerifier(SIGNER_KEY);
             SignedJWT signedJWT = SignedJWT.parse(token);
             Date expiryTime =   signedJWT.getJWTClaimsSet().getExpirationTime();
-
-            signedJWT.getJWTClaimsSet().getExpirationTime();
-
             boolean verified = signedJWT.verify(verifier);
-
             if(!(verified && expiryTime.after(new Date()))){
                 throw new AppException(ErrorCode.NOT_AUTHENTICATED);
             }

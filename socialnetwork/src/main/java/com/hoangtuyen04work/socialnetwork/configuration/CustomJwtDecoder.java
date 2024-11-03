@@ -35,12 +35,10 @@ public class CustomJwtDecoder implements JwtDecoder {
     public Jwt decode(String token) throws JwtException {
         try {
             validateToken(token);
-
-                SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HmacSHA512");
-                nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec)
+            SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HmacSHA512");
+            nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec)
                         .macAlgorithm(MacAlgorithm.HS512)
                         .build();
-
             return nimbusJwtDecoder.decode(token);
         } catch (Exception e) {
             try {
@@ -50,7 +48,6 @@ public class CustomJwtDecoder implements JwtDecoder {
             }
             return null;
         }
-
     }
 
     private void validateToken(String token) throws AppException, JOSEException, ParseException {

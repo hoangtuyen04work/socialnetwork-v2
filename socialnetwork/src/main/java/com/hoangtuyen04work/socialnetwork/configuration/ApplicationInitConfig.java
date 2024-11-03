@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -24,13 +23,10 @@ import java.util.HashSet;
 public class ApplicationInitConfig {
 
     PasswordEncoder passwordEncoder;
-
     @NonFinal
     static final String ADMIN_USER_NAME = "admin";
-
     @NonFinal
     static final String ADMIN_PASSWORD = "admin";
-
     @Bean
     @ConditionalOnProperty(
             prefix = "spring",

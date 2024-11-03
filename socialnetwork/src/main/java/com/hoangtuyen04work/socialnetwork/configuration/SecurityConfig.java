@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.spec.SecretKeySpec;
 import com.hoangtuyen04work.socialnetwork.constant.Role;
-@Slf4j
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -45,20 +45,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        long reqest = 0;
-        System.err.println("number requets: " + reqest++);
         httpSecurity
                 .authorizeRequests(request ->
                         request.requestMatchers(NotAuthentication_Url ).permitAll()
-                                .requestMatchers(Authentication_Url ).hasRole(Role.USER)
-                                .anyRequest()
-                                .authenticated());
-//                .oauth2Login(oauth2 -> oauth2
-//                        .defaultSuccessUrl("/login/google", true)
-//                        .userInfoEndpoint(userInfo -> userInfo
-//                                .userService(new DefaultOAuth2UserService())
-//                        )
-//                );
+                                .requestMatchers(Authentication_Url ).hasRole(Role.USER).anyRequest().authenticated());
+
         httpSecurity.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer
                                 -> jwtConfigurer.decoder(customJwtDecoder)
